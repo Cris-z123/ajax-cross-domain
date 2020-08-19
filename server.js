@@ -59,7 +59,16 @@ var server = http.createServer(function(request, response){
     }else if(path === '/mock2.json'){
         response.statusCode = 200
         response.setHeader('Content-Type', 'text/json;charset=utf-8')
+        response.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888')
         response.write(fs.readFileSync('db/mock2.json'))
+        response.end()
+    }else if(path === '/jsonp.js'){
+        response.statusCode = 200
+        response.setHeader('Content-Type', 'text/javascirpt;charset=utf-8')
+        const string = fs.readFileSync('./public/jsonp.js').toString()
+        const data = fs.readFileSync('./db/mock2.json').toString()
+        const string2 = string.replace("{{data}}", data) 
+        response.write(string2)
         response.end()
     }else{
         response.statusCode = 404
